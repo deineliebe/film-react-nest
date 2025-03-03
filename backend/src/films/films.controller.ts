@@ -11,9 +11,8 @@ export class FilmsController {
   }
 
   @Get('/:id/schedule/')
-  async findFilmById(@Param('id') id: string) {
-    const film = await this.filmsService.getFilmById(id);
-    const schedule = film.schedule || [];
-    return schedule;
+  async findFilmsById(@Param('id') id: string) {
+    const films = await this.filmsService.getFilmsById(id);
+    return films.schedules || [];
   }
 }

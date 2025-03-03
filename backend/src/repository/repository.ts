@@ -1,24 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Film, Schedule } from '../films/films.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Films } from '../films/entities/films.entity';
+import { Schedules } from '../films/entities/schedules.entity';
 
 @Injectable()
-export class FilmsRepository {
-  constructor(@InjectModel(Film.name) private filmModel: Model<Film>) {}
+export class dbRepository {
+  constructor(
+    @InjectRepository(Films) private filmsRepository: Repository<Films>,
+    @InjectRepository(Schedules)
+    private schedulesRepository: Repository<Schedules>,
+  ) {}
 
-  async getFilms(): Promise<Film[]> {
-    return this.filmModel.find();
+  async getFilms(): Promise<Films[]> {
+    return this.filmsRepository.find({
+      relations: ['schedules'],
+    });
   }
 
-  async getFilmById(id: string): Promise<Film> {
-    return this.filmModel.findOne({ id: id });
+  async getFilmsById(id: string): Promise<Films> {
+    return this.filmsRepository.findOne({
+      where: { id: id },
+      relations: ['schedules'],
+    });
   }
 
-  async putFilmById(id: string, schedule: Schedule[]) {
-    return await this.filmModel.updateOne(
-      { id: id },
-      { $set: { schedule: schedule } },
-    );
+  async getSchedulesById(id: string): Promise<Schedules> {
+    return this.schedulesRepository.findOne({
+      where: { id: id },
+    });
+  }
+
+  async putScheduleById(id: string, taken: string) {
+    await this.schedulesRepository.update({ id: id }, { taken: taken });
   }
 }
