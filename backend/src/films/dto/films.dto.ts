@@ -1,4 +1,4 @@
-export class ScheduleDTO {
+export class SchedulesDTO {
   id: string;
   daytime: Date;
   hall: number;
@@ -8,7 +8,7 @@ export class ScheduleDTO {
   taken: string[];
 }
 
-export class FilmDTO {
+export class FilmsDTO {
   id: string;
   rating: number;
   director: string;
@@ -18,9 +18,9 @@ export class FilmDTO {
   title: string;
   about: string;
   description: string;
-  schedule: ScheduleDTO[];
+  schedules: SchedulesDTO[];
 
-  public get filmSchedule() {
-    return this.schedule;
+  public get Filmschedules() {
+    return this.schedules;
   }
 }

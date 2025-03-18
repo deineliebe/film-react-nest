@@ -4,35 +4,36 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { GetTicketsInfo, OrderDTO } from './dto/order.dto';
-import { FilmsRepository } from '../repository/repository';
+import { dbRepository } from '../repository/repository';
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly filmsRepository: FilmsRepository) {}
+  constructor(private readonly filmsRepository: dbRepository) {}
 
   async addOrder(orders: OrderDTO[]): Promise<GetTicketsInfo> {
     const tickets = [];
     for (const order of orders) {
-      const orderedFilm = await this.filmsRepository.getFilmById(order.film);
-      if (!orderedFilm) {
-        throw new NotFoundException('This film is unavailable');
-      }
-      const selectedTime = orderedFilm.schedule.find(
-        (schedule) => schedule.id === order.session,
+      const schedule = await this.filmsRepository.getSchedulesById(
+        order.session,
       );
-      if (!selectedTime) {
+      if (!schedule) {
+        throw new NotFoundException('This schedule does not exist');
+      }
+      if (schedule.daytime !== order.daytime) {
         throw new NotFoundException(
-          "This time for choosen film isn't in a schedule",
+          "This time for choosen film isn't in a schedules",
         );
       }
       const place = `${order.row}:${order.seat}`;
-      if (selectedTime.taken.indexOf(place) !== -1) {
+      schedule.taken = schedule.taken.trim();
+      const taken = schedule.taken ? schedule.taken.split(',') : [];
+      if (taken.indexOf(place) !== -1) {
         throw new BadRequestException('This place is already taken');
       }
-      selectedTime.taken.push(place);
-      await this.filmsRepository.putFilmById(
-        orderedFilm.id,
-        orderedFilm.schedule,
+      taken.push(place);
+      await this.filmsRepository.putScheduleById(
+        order.session,
+        taken.join(','),
       );
       tickets.push(order);
     }
