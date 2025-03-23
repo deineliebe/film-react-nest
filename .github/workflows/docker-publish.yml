@@ -6,7 +6,9 @@ name: Docker
 # documentation.
 
 env:
+  # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
 
 on:
@@ -17,13 +19,6 @@ on:
     branches:
       - review-2
       - main
-
-env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: ghcr.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   build:
