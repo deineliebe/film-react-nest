@@ -1,7 +1,4 @@
-import { Films } from '../../films/entities/films.entity';
-
 export class OrderDTO {
-  film: Films;
   session: string;
   daytime: string;
   row: number;
