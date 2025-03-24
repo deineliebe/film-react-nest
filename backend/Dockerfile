@@ -9,9 +9,8 @@ CMD ["node", "dist/main"]
 
 FROM node:alpine AS production
 WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
+COPY --from=build /app/dist /dist
+COPY --from=build /app/package*.json /app/
+COPY --from=build /app/public /app/public
 EXPOSE 3000
 CMD ["node", "dist/index.js"]
