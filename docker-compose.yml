@@ -66,7 +66,7 @@ services:
       - "80:80"
     networks:
       - frontend-net
-      - backend-net
+      - backend_net
     depends_on:
       - frontend
       - backend
@@ -75,6 +75,7 @@ services:
 volumes:
   postgres_data:
   pgadmin_data:
+  frontend_dist:
 
 networks:
   backend-net:
