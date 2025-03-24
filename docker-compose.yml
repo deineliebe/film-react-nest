@@ -57,10 +57,24 @@ services:
       - backend/.env
     restart: unless-stopped
 
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    networks:
+      - frontend-net
+      - backend-net
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   pgadmin_data:
-  frontend_dist:
 
 networks:
   backend-net:
