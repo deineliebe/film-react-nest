@@ -65,7 +65,7 @@ services:
       - 443:443
     networks:
       - frontend-net
-      - backend_net
+      - backend-net
     depends_on:
       - frontend
       - backend
