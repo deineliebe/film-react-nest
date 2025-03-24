@@ -1,4 +1,4 @@
-## Ссылка: https://deineliebe.film.project.nomorepartiessbs.ru
+## Ссылка: https://deinefilms.nomorepartiessbs.ru
 
 # React + TypeScript + Vite
 
