@@ -6,7 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     networks:
-      - frontend-net
+      - frontend-network
     volumes:
       - frontend_dist:/app/dist
     depends_on:
@@ -22,7 +22,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     networks:
-      - backend-net
+      - backend-network
     depends_on:
       - postgres
     env_file:
@@ -48,7 +48,7 @@ services:
     ports:
       - 8080:80
     networks:
-      - backend-net
+      - backend-network
     depends_on:
       - postgres
     env_file:
@@ -56,26 +56,27 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_dist:/var/www/frontend:ro
     ports:
       - 80:80
       - 443:443
     networks:
-      - frontend-net
-      - backend-net
+      - frontend-network
+      - backend-network
     depends_on:
       - frontend
       - backend
-    restart: unless-stopped
+    restart: always
+
+networks:
+  backend-network:
+  frontend-network:
 
 volumes:
   postgres_data:
   pgadmin_data:
   frontend_dist:
-
-networks:
-  backend-net:
-  frontend-net:
