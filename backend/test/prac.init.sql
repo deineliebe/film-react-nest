@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 create database prac
     with owner prac;
 
-create table public.Films
+create table public.films
 (
     id          uuid default uuid_generate_v4() not null
         constraint "PK_697487ada088902377482c970d1"
@@ -18,7 +18,7 @@ create table public.Films
     description varchar                         not null
 );
 
-alter table public.Films
+alter table public.films
     owner to prac;
 
 create table public.schedules
