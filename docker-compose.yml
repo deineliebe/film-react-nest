@@ -9,8 +9,6 @@ services:
       - frontend-network
     volumes:
       - frontend_dist:/app/dist
-    depends_on:
-      - backend  
     env_file:
       - frontend/.env
     restart: unless-stopped

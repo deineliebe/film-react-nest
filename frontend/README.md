@@ -1,7 +1,3 @@
-## Ссылки: 
-https://deinefilms.nomorepartiessbs.ru/
-PgAdmin: http://deinefilms.nomorepartiessbs.ru:8080/
-
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
