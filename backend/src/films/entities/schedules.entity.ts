@@ -23,7 +23,6 @@ export class Schedules {
   seats: number;
   @Column()
   @IsNumber()
-  @IsPositive()
   price: number;
   @Column({ type: 'text' })
   @IsString()
