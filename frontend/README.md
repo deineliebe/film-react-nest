@@ -1,4 +1,6 @@
-## Ссылка: https://deinefilms.nomorepartiessbs.ru
+## Ссылки: 
+https://deinefilms.nomorepartiessbs.ru/
+PgAdmin: http://deinefilms.nomorepartiessbs.ru:8080/
 
 # React + TypeScript + Vite
 
