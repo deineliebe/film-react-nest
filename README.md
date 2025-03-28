@@ -1,5 +1,10 @@
 # FILM!
 
+## Ссылки: 
+https://deinefilms.nomorepartiessbs.ru/
+
+PgAdmin: https://deinefilms.nomorepartiessbs.ru:8080/
+
 ## Установка
 
 ### MongoDB
@@ -30,6 +35,8 @@ MongoDB должна быть установлена и запущена.
 `npm start:debug`
 
 Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
+
+
 
 
 

@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  JoinTable,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { IsNumber, IsPositive, IsString } from 'class-validator';
 import { Schedules } from './schedules.entity';
 
@@ -12,7 +6,7 @@ import { Schedules } from './schedules.entity';
 export class Films {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-  @Column({ nullable: true })
+  @Column({ type: 'double precision' })
   @IsNumber()
   @IsPositive()
   rating: number;
@@ -37,8 +31,6 @@ export class Films {
   @Column()
   @IsString()
   description: string;
-  @Column({ type: 'text', nullable: true })
-  @OneToMany(() => Schedules, (schedules) => schedules.film)
-  @JoinTable()
+  @OneToMany(() => Schedules, (schedules) => schedules.film, { cascade: true })
   schedules: Schedules[];
 }

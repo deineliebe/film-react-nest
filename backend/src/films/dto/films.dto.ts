@@ -20,7 +20,7 @@ export class FilmsDTO {
   description: string;
   schedules: SchedulesDTO[];
 
-  public get Filmschedules() {
+  public get getSchedules() {
     return this.schedules;
   }
 }
