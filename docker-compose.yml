@@ -33,7 +33,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - 5433:5433
+      - 5432:5432
     env_file:
       - backend/.env
     restart: unless-stopped
@@ -59,19 +59,32 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./frontend_dist:/var/www/frontend
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
     ports:
       - 80:80
+      - 443:443
     networks:
       - frontend-network
       - backend-network
     depends_on:
       - frontend
       - backend
-    restart: unless-stopped
+    restart: always
+
+  certbot:
+    image: certbot/certbot:latest
+    networks:
+      - backend-network
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 networks:
   backend-network:
+    driver: bridge
   frontend-network:
+    driver: bridge
 
 volumes:
   postgres_data:
