@@ -36,8 +36,11 @@ MongoDB должна быть установлена и запущена.
 
 Для проверки отправьте тестовый запрос с помощью Postman или `curl`.
 
-
-
-
-
-
+Немного полезных команд, которые я постоянно забываю:
+- sudo docker logs nginx
+- sudo docker-compose up -d --build
+- sudo docker-compose down
+- sudo docker ps -a
+- pidof nginx
+- sudo strace -p 20634 -p 20502 -p 20237 -p 20236 -p 20026 -e trace=file -f
+- sudo docker restart nginx

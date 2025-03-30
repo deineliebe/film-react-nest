@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsPositive, IsString } from 'class-validator';
 import { Schedules } from './schedules.entity';
 
 @Entity()
@@ -14,7 +14,7 @@ export class Films {
   @IsString()
   director: string;
   @Column({ type: 'text' })
-  @IsString()
+  @IsArray()
   tags: string[];
   @Column()
   @IsString()

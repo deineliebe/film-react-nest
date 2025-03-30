@@ -25,16 +25,15 @@ export class OrderService {
         );
       }
       const place = `${order.row}:${order.seat}`;
-      schedule.taken = schedule.taken.trim();
-      const taken = schedule.taken ? schedule.taken.split(',') : [];
-      if (taken.indexOf(place) !== -1) {
+      if (schedule.taken && schedule.taken.indexOf(place) !== -1) {
         throw new BadRequestException('This place is already taken');
       }
-      taken.push(place);
-      await this.filmsRepository.putScheduleById(
-        order.session,
-        taken.join(','),
-      );
+      const takenArray = Array.isArray(schedule.taken)
+        ? schedule.taken.concat(place)
+        : schedule.taken
+          ? [`${schedule.taken},${place}`]
+          : [place];
+      await this.filmsRepository.putScheduleById(order.session, takenArray);
       tickets.push(order);
     }
     return {

@@ -26,7 +26,7 @@ create table public.schedules
     seats    integer                         not null,
     price    double precision                not null,
     taken    text                            not null,
-    "filmsId" uuid
+    "filmId" uuid
         constraint "FK_1c2f5e637713a429f4854024a76"
             references public.films
 );

@@ -31,7 +31,7 @@ export class dbRepository {
     });
   }
 
-  async putScheduleById(id: string, taken: string) {
+  async putScheduleById(id: string, taken: string[]) {
     await this.schedulesRepository.update({ id: id }, { taken: taken });
   }
 }

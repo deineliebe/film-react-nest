@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Films } from './films.entity';
-import { IsNumber, IsPositive, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsPositive, IsString } from 'class-validator';
 
 @Entity()
 export class Schedules {
@@ -26,8 +26,8 @@ export class Schedules {
   @IsPositive()
   price: number;
   @Column({ type: 'text' })
-  @IsString()
-  taken: string;
+  @IsArray()
+  taken: string[];
   @ManyToOne(() => Films, (film) => film.schedules)
   film: Films;
 }

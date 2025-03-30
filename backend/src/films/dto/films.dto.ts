@@ -12,7 +12,7 @@ export class FilmsDTO {
   id: string;
   rating: number;
   director: string;
-  tags: number[];
+  tags: string[];
   image: string;
   cover: string;
   title: string;
