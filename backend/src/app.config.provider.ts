@@ -6,7 +6,9 @@ export const configProvider = {
   useValue: <AppConfig>{
     database: {
       driver: process.env.DATABASE_DRIVER || 'postgress',
-      url: process.env.DATABASE_URL || 'postgress://localhost:5433/prac',
+      url:
+        process.env.DATABASE_URL ||
+        'postgres://postgres:qwerty@postgres:5432/prac',
     },
   },
 };

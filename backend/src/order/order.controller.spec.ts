@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
-import { GetTicketsInfo, OrderDTO } from './dto/order.dto';
+import { GetTicketsInfo, OrderDTO, TicketDTO } from './dto/order.dto';
 
 describe('OrderService', () => {
   let service: OrderService;
   let controller: OrderController;
 
-  const ticket: OrderDTO = {
+  const ticket: TicketDTO = {
     session: 'schedule1',
     daytime: new Date(2025, 3, 22).toDateString(),
     row: 1,
@@ -15,9 +15,15 @@ describe('OrderService', () => {
     price: 4000,
   };
 
+  const order: OrderDTO = {
+    email: 'test@yandex.ru',
+    phone: 'qwerty',
+    tickets: [ticket],
+  };
+
   const mockedGetTicketData: GetTicketsInfo = {
     total: 2,
-    tickets: [ticket],
+    items: [ticket],
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,12 +45,12 @@ describe('OrderService', () => {
   });
 
   it('.findAll() should call service getFilms function', () => {
-    controller.create([ticket]);
+    controller.create(order);
     expect(service.addOrder).toHaveBeenCalledTimes(1);
   });
 
   it('.findAll() should get right result', async () => {
-    const result = await controller.create([ticket]);
+    const result = await controller.create(order);
     expect(result).toEqual(mockedGetTicketData);
   });
 });

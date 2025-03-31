@@ -1,4 +1,4 @@
-export class OrderDTO {
+export class TicketDTO {
   session: string;
   daytime: string;
   row: number;
@@ -6,7 +6,13 @@ export class OrderDTO {
   price: number;
 }
 
+export class OrderDTO {
+  email: string;
+  phone: string;
+  tickets: TicketDTO[];
+}
+
 export class GetTicketsInfo {
   total: number;
-  tickets: OrderDTO[];
+  items: TicketDTO[];
 }

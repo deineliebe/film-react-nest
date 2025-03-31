@@ -7,7 +7,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Post('/')
-  async create(@Body() order: OrderDTO[]) {
-    return await this.orderService.addOrder(order);
+  async create(@Body() order: OrderDTO) {
+    return await this.orderService.addOrder(order.tickets);
   }
 }

@@ -3,14 +3,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { GetTicketsInfo, OrderDTO } from './dto/order.dto';
+import { GetTicketsInfo, TicketDTO } from './dto/order.dto';
 import { dbRepository } from '../repository/repository';
 
 @Injectable()
 export class OrderService {
   constructor(private readonly filmsRepository: dbRepository) {}
 
-  async addOrder(orders: OrderDTO[]): Promise<GetTicketsInfo> {
+  async addOrder(orders: TicketDTO[]): Promise<GetTicketsInfo> {
     const tickets = [];
     for (const order of orders) {
       const schedule = await this.filmsRepository.getSchedulesById(
@@ -25,20 +25,21 @@ export class OrderService {
         );
       }
       const place = `${order.row}:${order.seat}`;
-      if (schedule.taken && schedule.taken.indexOf(place) !== -1) {
+      schedule.taken = schedule.taken.trim();
+      const taken = schedule.taken ? schedule.taken.split(',') : [];
+      if (taken.indexOf(place) !== -1) {
         throw new BadRequestException('This place is already taken');
       }
-      const takenArray = Array.isArray(schedule.taken)
-        ? schedule.taken.concat(place)
-        : schedule.taken
-          ? [`${schedule.taken},${place}`]
-          : [place];
-      await this.filmsRepository.putScheduleById(order.session, takenArray);
+      taken.push(place);
+      await this.filmsRepository.putScheduleById(
+        order.session,
+        taken.join(','),
+      );
       tickets.push(order);
     }
     return {
       total: tickets.length,
-      tickets: tickets,
+      items: tickets,
     };
   }
 }
