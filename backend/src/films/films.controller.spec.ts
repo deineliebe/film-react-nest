@@ -93,7 +93,7 @@ describe('FilmsController', () => {
 
   it('.findAll() should get right result', async () => {
     const result = await controller.findAll();
-    expect(result).toEqual(mockedFilmData);
+    expect(result.items).toEqual(mockedFilmData);
   });
 
   it('.findFilmsById() should call service getFilmsById function', () => {
@@ -103,6 +103,6 @@ describe('FilmsController', () => {
 
   it('.findFilmsById() should get right result', async () => {
     const result = await controller.findFilmsById('testid1');
-    expect(result).toEqual(mockedFilm1.schedules);
+    expect(result.items).toEqual(mockedFilm1.schedules);
   });
 });
