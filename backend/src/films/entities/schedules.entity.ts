@@ -21,13 +21,13 @@ export class Schedules {
   @IsNumber()
   @IsPositive()
   seats: number;
-  @Column()
+  @Column({ type: 'double precision' })
   @IsNumber()
   @IsPositive()
   price: number;
   @Column({ type: 'text' })
   @IsString()
   taken: string;
-  @ManyToOne(() => Films, (films) => films.schedules)
+  @ManyToOne(() => Films, (film) => film.schedules)
   film: Films;
 }

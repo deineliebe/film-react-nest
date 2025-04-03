@@ -1,0 +1,94 @@
+services:
+  frontend:
+    image: ghcr.io/deineliebe/film-react-nest/frontend:latest
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    networks:
+      - frontend-network
+    ports:
+      - 8081:80
+    volumes:
+      - frontend_dist:/app/dist
+    env_file:
+      - frontend/.env
+    restart: unless-stopped
+
+  backend:
+    image: ghcr.io/deineliebe/film-react-nest/backend:latest
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks:
+      - backend-network
+    depends_on:
+      - postgres
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - 8080:80
+    networks:
+      - backend-network
+    depends_on:
+      - postgres
+    env_file:
+      - backend/.env
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - frontend_dist:/var/www/frontend:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/letsencrypt/:ro
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - frontend-network
+      - backend-network
+    depends_on:
+      - frontend
+      - backend
+    restart: always
+
+  certbot:
+    image: certbot/certbot:latest
+    networks:
+      - backend-network
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
+
+networks:
+  backend-network:
+    driver: bridge
+  frontend-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  frontend_dist:

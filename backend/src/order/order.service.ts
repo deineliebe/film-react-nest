@@ -3,14 +3,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { GetTicketsInfo, OrderDTO } from './dto/order.dto';
+import { GetTicketsInfo, TicketDTO } from './dto/order.dto';
 import { dbRepository } from '../repository/repository';
 
 @Injectable()
 export class OrderService {
   constructor(private readonly filmsRepository: dbRepository) {}
 
-  async addOrder(orders: OrderDTO[]): Promise<GetTicketsInfo> {
+  async addOrder(orders: TicketDTO[]): Promise<GetTicketsInfo> {
     const tickets = [];
     for (const order of orders) {
       const schedule = await this.filmsRepository.getSchedulesById(
@@ -39,7 +39,7 @@ export class OrderService {
     }
     return {
       total: tickets.length,
-      tickets: tickets,
+      items: tickets,
     };
   }
 }

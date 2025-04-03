@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as path from 'node:path';
-
-import { configProvider } from './app.config.provider';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { FilmsModule } from './films/films.module';
-import { OrderModule } from './order/order.module';
 import { Films } from './films/entities/films.entity';
 import { Schedules } from './films/entities/schedules.entity';
+import { configProvider } from './app.config.provider';
+import { FilmsModule } from './films/films.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -18,14 +17,15 @@ import { Schedules } from './films/entities/schedules.entity';
     }),
     ServeStaticModule.forRoot({
       rootPath: path.join(__dirname, '..', 'public'),
+      renderPath: '/content/afisha/',
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5433,
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: 'prac',
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
       entities: [Films, Schedules],
       synchronize: true,
     }),
